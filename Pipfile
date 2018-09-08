@@ -5,8 +5,12 @@ name = "pypi"
 
 [packages]
 flask = "*"
+marshmallow = "*"
 
 [dev-packages]
+pytest = "*"
+black = "*"
+pytest-sugar = "*"
 
 [requires]
 python_version = "3.6"
