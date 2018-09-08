@@ -36,6 +36,9 @@ def parse(os_release: str):
     release_data = dict()
 
     for line in os_release.splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
         key, value = line.split("=")
         key = key.lower()
         release_data[key] = value.strip('"')
