@@ -6,11 +6,16 @@ name = "pypi"
 [packages]
 flask = "*"
 marshmallow = "*"
+# This is the same version as in alpine:3.8, so pipenv will ignore it
+# because it will already be installed from a system package
+psutil = "==5.4.6"
 
 [dev-packages]
 pytest = "*"
 black = "*"
 pytest-sugar = "*"
+uwsgi = "*"
+rope = "*"
 
 [requires]
 python_version = "3.6"
