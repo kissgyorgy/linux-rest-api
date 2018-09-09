@@ -48,5 +48,8 @@ def parse_os_release(os_release: str):
 
 
 def get_os_release():
-    os_release = Path("/etc/os-release").read_text()
+    try:
+        os_release = Path("/etc/os-release").read_text()
+    except FileNotFoundError:
+        os_release = Path("/usr/lib/os-release").read_text()
     return parse_os_release(os_release)
