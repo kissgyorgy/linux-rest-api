@@ -7,6 +7,7 @@ The announcement about it by Poettering:
 http://0pointer.de/blog/projects/os-release
 """
 from marshmallow import Schema, fields
+from pathlib import Path
 
 
 class OSRelease(Schema):
@@ -30,7 +31,7 @@ class OSRelease(Schema):
     variant_id = fields.Str(default=None)
 
 
-def parse(os_release: str):
+def parse_os_release(os_release: str):
     schema = OSRelease()
 
     release_data = dict()
@@ -44,3 +45,8 @@ def parse(os_release: str):
         release_data[key] = value.strip('"')
 
     return schema.dump(release_data)
+
+
+def get_os_release():
+    os_release = Path("/etc/os-release").read_text()
+    return parse_os_release(os_release)

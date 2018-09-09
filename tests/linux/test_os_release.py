@@ -1,11 +1,11 @@
 from pathlib import Path
 import pytest
-from linux_rest_api.linux.os_release import OSRelease, parse
+from linux_rest_api.system.os_release import OSRelease, parse_os_release
 
 
 def test_parse_xenial(datadir):
     xenial_os_release = (datadir / "os-release-ubuntu-xenial").read_text()
-    result = parse(xenial_os_release)
+    result = parse_os_release(xenial_os_release)
     assert result == {
         "name": "Ubuntu",
         "version": "16.04.4 LTS (Xenial Xerus)",
@@ -28,7 +28,7 @@ def test_parse_xenial(datadir):
 
 def test_parse_bionic(datadir):
     bionic_os_release = (datadir / "os-release-ubuntu-bionic").read_text()
-    result = parse(bionic_os_release)
+    result = parse_os_release(bionic_os_release)
     assert result == {
         "name": "Ubuntu",
         "version": "18.04.1 LTS (Bionic Beaver)",
@@ -51,7 +51,7 @@ def test_parse_bionic(datadir):
 
 def test_blank_lines_should_be_ignored(datadir):
     os_release = (datadir / "os-release-blank-lines").read_text()
-    result = parse(os_release)
+    result = parse_os_release(os_release)
     assert result == {
         "name": "Ubuntu",
         "version": "16.04.4 LTS (Xenial Xerus)",
@@ -73,14 +73,14 @@ def test_blank_lines_should_be_ignored(datadir):
 
 
 def test_defaults(datadir):
-    result = parse("")
+    result = parse_os_release("")
     assert result["name"] == "Linux"
     assert result["id"] == "linux"
 
 
 def test_comments_should_be_ignored(datadir):
     os_release = (datadir / "os-release-comments").read_text()
-    result = parse(os_release)
+    result = parse_os_release(os_release)
     assert result == {
         "name": "Ubuntu",
         "version": "16.04.4 LTS (Xenial Xerus)",
