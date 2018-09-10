@@ -32,8 +32,6 @@ class OSRelease(Schema):
 
 
 def parse_os_release(os_release: str):
-    schema = OSRelease()
-
     release_data = dict()
 
     for line in os_release.splitlines():
@@ -44,7 +42,7 @@ def parse_os_release(os_release: str):
         key = key.lower()
         release_data[key] = value.strip('"')
 
-    return schema.dump(release_data)
+    return OSRelease().dump(release_data)
 
 
 def get_os_release():
