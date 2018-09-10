@@ -2,7 +2,7 @@ import datetime as dt
 from pathlib import Path
 
 
-def _prepend_if_not_zero(value: float, unit: str, uptime: str):
+def _prepend_if_not_zero(value, unit: str, uptime: str):
     return f"{value}{unit}{uptime}" if value > 0 else uptime
 
 
@@ -11,7 +11,7 @@ def iso8601_duration(seconds: float):
     See: https://en.wikipedia.org/wiki/ISO_8601#Durations
     """
     minutes, seconds = divmod(seconds, 60)
-    # seconds = round(seconds, 2)
+    seconds = int(seconds) if seconds % 1 == 0 else round(seconds, 2)
     duration = _prepend_if_not_zero(seconds, "S", "")
 
     hours, minutes = divmod(int(minutes), 60)
@@ -40,7 +40,7 @@ def parse_uptime(uptime: str):
     """Parses the output of /proc/uptime."""
     total_seconds, _ = uptime.split()
     # I don't think anybody needs microsecond precision and this is way easier to parse
-    total_seconds = int(float(total_seconds))
+    total_seconds = float(total_seconds)
     return total_seconds, iso8601_duration(total_seconds)
 
 
