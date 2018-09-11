@@ -1,3 +1,4 @@
+import platform
 import datetime as dt
 from flask import Blueprint, jsonify
 import psutil
@@ -22,5 +23,27 @@ def uptime():
             "uptime_seconds": uptime_seconds,
             "users": len(psutil.users()),
             "load": get_load(),
+        }
+    )
+
+
+@bp.route("/uname", methods=["GET"])
+def uname():
+    uname = platform.uname()
+    return jsonify(
+        {
+            # It's impossible to get an exact match for "uname -o" without calling
+            # the uname binary itself, because there are distros like Tiny Core Linux
+            # where the variable it's coming from is configurable. It's mostly
+            # "GNU/Linux", but there are some exceptions where it's simply "Linux"
+            # and faking "GNU/Linux here would be inaccurate sometimes.
+            # See: https://git.busybox.net/busybox/commit/?id=64ed5f0d3c5eefbb208d4a334654834c78be2cbd
+            # The response keys are coming from the uname(1) man page
+            "kernel_name": uname.system,
+            "nodename": uname.node,
+            "kernel_release": uname.release,
+            "kernel_version": uname.version,
+            "machine": uname.machine,
+            "processor": uname.processor or None,
         }
     )
