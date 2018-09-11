@@ -47,3 +47,22 @@ def uname():
             "processor": uname.processor or None,
         }
     )
+
+
+@bp.route("/memory", methods=["GET"])
+def memory():
+    swapmem = psutil.swap_memory()
+    return jsonify(
+        {
+            "memory": psutil.virtual_memory()._asdict(),
+            "swap": {
+                "total": swapmem.total,
+                "used": swapmem.used,
+                "free": swapmem.free,
+                "percent": swapmem.percent,
+                # sin and sout are terribly named IMO, so make them better
+                "swap_in": swapmem.sin,
+                "swap_out": swapmem.sout,
+            },
+        }
+    )
