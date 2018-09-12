@@ -1,9 +1,8 @@
-# linux-rest-api
+# linux-rest-api - A REST API for Linux!
 
-A REST API for Linux! It makes it possible to configure your entire system
-(well, parts which are implemented) via a REST API.
-The main advantage is that you don't have to parse all kind of configuration files,
-it is a community effort, all kind of parsers are implemented.
+It makes it possible to configure your entire system (well, parts which are implemented) 
+via a REST API. The main advantage is that you don't have to parse all kind of 
+configuration files, it is a community effort, all kind of parsers are implemented.
 
 It's the modern version of [Webmin](http://www.webmin.com/).
 
