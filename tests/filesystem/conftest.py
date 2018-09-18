@@ -1,6 +1,8 @@
 import os
 import socket
 from pathlib import Path
+import pytest
+from linux_rest_api import filesystem as fs
 
 
 def make_test_file(dir: Path, filename: str, content=None):
@@ -28,3 +30,25 @@ def make_test_socket(dir: Path, filename: str):
     os.chdir(dir)
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     sock.bind(filename)
+
+
+@pytest.fixture(scope="session")
+def make_file_attributes():
+    current_uid = os.getuid()
+    current_gid = os.getgid()
+
+    def make_filetype_dict(name, mode, symbolic_mode, long_mode, ftype, size):
+        return {
+            "name": name,
+            "uid": current_uid,
+            "gid": current_gid,
+            "user": fs.get_user(current_uid),
+            "group": fs.get_group(current_gid),
+            "mode": mode,
+            "mode_symbolic": symbolic_mode,
+            "mode_long": long_mode,
+            "type": ftype,
+            "size": size,
+        }
+
+    return make_filetype_dict
