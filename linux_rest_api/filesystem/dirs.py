@@ -11,7 +11,7 @@ def list_dir(path: Path):
             sr = entry.stat(follow_symlinks=False)
             yield {
                 "name": entry.name,
-                "type": file_type(entry, sr.st_mode),
+                "type": file_type(sr.st_mode),
                 "mode": octal_mode(sr.st_mode),
                 "mode_symbolic": symbolic_mode(sr.st_mode),
                 "mode_long": long_mode(sr.st_mode),

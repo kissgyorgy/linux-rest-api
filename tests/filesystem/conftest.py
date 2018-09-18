@@ -29,12 +29,3 @@ def make_test_socket(dir: Path, filename: str):
     os.chdir(dir)
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     sock.bind(filename)
-
-
-def make_entires_with_scandir(dir) -> dict:
-    entries = {}
-    with os.scandir(dir) as it:
-        for entry in it:
-            sr = entry.stat(follow_symlinks=False)
-            entries[entry.name] = (entry, sr.st_mode)
-    return entries

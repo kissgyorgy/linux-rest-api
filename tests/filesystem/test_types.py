@@ -1,3 +1,4 @@
+import os
 from linux_rest_api.filesystem import file_type
 from .conftest import (
     make_test_file,
@@ -5,8 +6,16 @@ from .conftest import (
     make_test_symlink,
     make_test_fifo,
     make_test_socket,
-    make_entires_with_scandir,
 )
+
+
+def make_st_modes_with_scandir(dir) -> dict:
+    stats = {}
+    with os.scandir(dir) as it:
+        for entry in it:
+            sr = entry.stat(follow_symlinks=False)
+            stats[entry.name] = sr.st_mode
+    return stats
 
 
 def test_file_types(tmpdir):
@@ -16,10 +25,10 @@ def test_file_types(tmpdir):
     make_test_fifo(tmpdir, "fifo_file")
     make_test_socket(tmpdir, "socket")
 
-    entries = make_entires_with_scandir(tmpdir)
+    st_modes = make_st_modes_with_scandir(tmpdir)
 
-    assert file_type(*entries["regular_file"]) == "-"
-    assert file_type(*entries["directory"]) == "d"
-    assert file_type(*entries["fifo_file"]) == "p"
-    assert file_type(*entries["socket"]) == "s"
-    assert file_type(*entries["symlink"]) == "l"
+    assert file_type(st_modes["regular_file"]) == "-"
+    assert file_type(st_modes["directory"]) == "d"
+    assert file_type(st_modes["fifo_file"]) == "p"
+    assert file_type(st_modes["socket"]) == "s"
+    assert file_type(st_modes["symlink"]) == "l"

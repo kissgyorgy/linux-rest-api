@@ -2,12 +2,12 @@ import os
 import stat
 
 
-def file_type(entry: os.DirEntry, st_mode: int):
-    if entry.is_file(follow_symlinks=False):
+def file_type(st_mode: int):
+    if stat.S_ISREG(st_mode):
         return "-"
-    elif entry.is_dir(follow_symlinks=False):
+    elif stat.S_ISDIR(st_mode):
         return "d"
-    elif entry.is_symlink():
+    elif stat.S_ISLNK(st_mode):
         return "l"
     elif stat.S_ISSOCK(st_mode):
         return "s"
