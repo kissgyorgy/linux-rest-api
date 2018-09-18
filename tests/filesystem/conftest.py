@@ -4,23 +4,22 @@ from pathlib import Path
 
 
 def make_test_file(dir: Path, filename: str, content=None):
-    test_file = dir.joinpath(filename)
+    test_file = dir / filename
     test_file.touch()
     if content is not None:
         test_file.write_bytes(content)
 
 
 def make_test_dir(dir: Path, dirname: str):
-    dir.joinpath(dirname).mkdir()
+    (dir / dirname).mkdir()
 
 
 def make_test_symlink(dir: Path, filename: str, to: str):
-    dir.joinpath(filename).symlink_to(to)
+    (dir / filename).symlink_to(to)
 
 
 def make_test_fifo(dir: Path, filename: str):
-    fifo = dir.joinpath(filename)
-    os.mkfifo(fifo)
+    os.mkfifo(dir / filename)
 
 
 def make_test_socket(dir: Path, filename: str):
