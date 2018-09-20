@@ -12,3 +12,8 @@ def list_file(fullpath):
     name = PurePath(fullpath).name
     sr = os.stat("/" + fullpath, follow_symlinks=False)
     return jsonify(get_attributes(name, sr))
+
+
+@bp.route("/<path:fullpath>", methods=["GET"])
+def download_file(fullpath):
+    return send_file("/" + fullpath)
