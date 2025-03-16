@@ -8,7 +8,7 @@ flask = "*"
 marshmallow = "*"
 # This is the same version as in alpine:3.8, so pipenv will ignore it
 # because it will already be installed from a system package
-psutil = "==5.6.6"
+psutil = "==5.9.8"
 
 [dev-packages]
 pytest = "*"
